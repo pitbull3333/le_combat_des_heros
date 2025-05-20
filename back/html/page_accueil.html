@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    	<meta charset="utf-8">
+    	<link rel="stylesheet" href="page_accueil.css">
+    	<link rel="shortcut icon" href="favicon.ico">
+    	<title>PAGE D'ACCUEIL</title>
+  	</head>
+	<body>
+		<div class="div_haut">
+			<div class="div_titre_haut">LE COMBAT DES HEROS</div>
+			<div class="div_text_nom_utilisateur">JOUEUR : <%= utilisateur %></div>
+			<div class="div_log_out">
+				<input class="input_bouton" id="bouton_log_out" type="button" value="SE D&#201;CONNECTER">
+				<!--<div class="text_reponse" id="text_reponse_log_out"></div>-->
+			</div>
+		</div>
+		<div class="div_bas">
+			<div class="div_creation_partie">
+				<div class="div_titre_bas">CR&#201;ER UNE PARTIE</div>
+				<div class="div_consigne">Nom de partie : Entre 5 et 20 caractères et seulement des lettres et des chiffres.</div>
+				<div class="div_nom_partie">
+					<div class="div_text">Nom de partie :</div>
+					<div class="div_nom_partie_saissi">
+						<input class="input_nom_partie_saissi" id="nom_partie_saissi" type="text">
+					</div>
+				</div>
+				<div class="div_bouton_creer_partie">
+					<input class="input_bouton" id="input_bouton_creer_partie" type="button" value="CR&#201;ER">
+				</div>
+				<div class="div_reponse_creer_partie"></div>
+			</div>
+			<div class="div_consigne"></div>
+			<div class="div_liste_partie">
+				<div class="div_titre_bas">LISTE DES PARTIES</div>
+				<div class="div_champ">
+					<div class="div_text" id="div_champ_nom_partie">Nom de partie</div>
+					<div class="div_text" id="div_champ_j1">Joueur 1</div>
+					<div class="div_text" id="div_champ_j2">Joueur 2</div>
+					<div class="div_text" id="div_champ_rejoindre">Rejoindre</div>
+				</div>
+				<div class="conteneur_div_partie"></div>
+				<div class="div_reponse_liste_partie"></div>
+			</div>
+		</div>
+	</body>
+</html>
+<script src="jquery.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+	$(document).ready(()=>{
+		const largeur_cellule_tableau_partie=155;
+		const hauteur_cellule_tableau_partie=40;
+		const epaisseur_bordure_exterieur_tableau_partie=4;
+		const epaisseur_bordure_tableau_partie=2;
+		$("#div_champ_nom_partie,#div_champ_j1,#div_champ_j2,#div_champ_rejoindre").css("width",largeur_cellule_tableau_partie);
+		$("#div_champ_nom_partie,#div_champ_j1,#div_champ_j2,#div_champ_rejoindre").css("height",hauteur_cellule_tableau_partie);
+		$("#div_champ_nom_partie,#div_champ_j1,#div_champ_j2,#div_champ_rejoindre").css("borderTop",epaisseur_bordure_exterieur_tableau_partie + "px solid black");
+		$("#div_champ_nom_partie").css("borderLeft",epaisseur_bordure_exterieur_tableau_partie + "px solid black");
+		$("#div_champ_rejoindre").css("borderRight",epaisseur_bordure_exterieur_tableau_partie + "px solid black");
+		$("#div_champ_nom_partie,#div_champ_j1,#div_champ_j2").css("borderRight",epaisseur_bordure_tableau_partie + "px solid black");
+		$("#div_champ_nom_partie,#div_champ_j1,#div_champ_j2,#div_champ_rejoindre").css("borderBottom",3 + "px solid black");
+		$("#bouton_log_out").click(()=>{
+			$("#bouton_log_out").prop("disabled",true);
+			$("#text_reponse_log_out").html("veuillez patienter...");
+			$("#text_reponse_log_out").css("color","black");
+			$.post("/log_out",()=>{
+				if(window.location.href=="http://127.0.0.1:800/page_accueil"){
+					window.location.href="http://127.0.0.1:800";
+				}else{
+					if(window.location.href=="https://session-dev.herokuapp.com/page_accueil"){
+						window.location.href="https://session-dev.herokuapp.com";
+					}else{
+						window.location.href="https://session-prod.herokuapp.com";
+					}
+				}
+  			}).fail(()=>{
+				$("#text_reponse_log_out").html("Le serveur n'est pas joignable.");
+				$("#text_reponse_log_out").css("color","red");
+				$("#bouton_log_out").prop("disabled",false);
+			})
+        })
+		$("#input_bouton_creer_partie").click(()=>{
+			$("#input_bouton_creer_partie").prop("disabled",true);
+			$(".div_reponse_creer_partie").html("Veuillez patienter...");
+        	$(".div_reponse_creer_partie").css("color","black");
+			const nom_partie_saisi=$("#nom_partie_saissi").val();
+        	$.post("/creer_partie",{nom_partie:nom_partie_saisi},(res)=>{
+  				$(".div_reponse_creer_partie").html(res.message);
+  				$(".div_reponse_creer_partie").css("color",res.css);
+				$(res.id).css("background","#f88");
+  				$("#input_bouton_creer_partie").prop("disabled",false);
+	  			if(res.css=="green"){
+					$("#nom_partie_saissi").html("").val("");
+					$("#nom_partie_saissi").css("backgroundColor","#fff");
+				}
+			}).fail(()=>{
+				$(".div_reponse_creer_partie").html("Le serveur n'est pas joignable.");
+				$(".div_reponse_creer_partie").css("color","red");
+				$("#input_bouton_creer_partie").prop("disabled",false);
+			})
+        })
+		const socket = io({withCredentials:true});// Créer une connexion au serveur et transmission des cookies utilisé pour la session avec withCredentials:true
+		socket.emit("liste_partie");
+		socket.on("update_liste_partie",(data) => {
+			socket.emit("liste_partie");
+		});
+  		socket.on("liste_partie",(data) => {
+  			const {liste_partie} = data;
+  			$(".conteneur_div_partie").html("");
+  			if(liste_partie.length > 0){
+	        	liste_partie.forEach((n,index) => {// n = liste_partie
+	        		const ligne_partie=data.code_html.replace(/\{0\}/g,index);
+		        	$(".conteneur_div_partie").append(ligne_partie);
+		        	$("#div_partie_" + index).html(n.nom_partie);
+		        	$("#div_nom_j1_" + index).html(n.j1.nom_joueur);
+		        	$("#div_nom_j2_" + index).html(n.j2.nom_joueur);
+		        	let couleur_ligne;
+		        	if(index % 2 === 0){
+		        		couleur_ligne = "#777";
+		        	}else{
+		        		couleur_ligne = "#999";
+		        	}
+		        	$("#div_partie_" + index).css("backgroundColor",couleur_ligne);
+		        	$("#div_nom_j1_" + index).css("backgroundColor",couleur_ligne);
+		        	$("#div_nom_j2_" + index).css("backgroundColor",couleur_ligne);
+		        	$("#div_bouton_rejoindre_" + index).css("backgroundColor",couleur_ligne);
+					$(".div_partie,.div_nom_j1,.div_nom_j2,.div_bouton_rejoindre").css("width",largeur_cellule_tableau_partie);
+					$(".div_partie,.div_nom_j1,.div_nom_j2,.div_bouton_rejoindre").css("height",hauteur_cellule_tableau_partie);
+					$(".div_partie").css("borderLeft",epaisseur_bordure_exterieur_tableau_partie + "px solid black");
+					$(".div_bouton_rejoindre").css("borderRight",epaisseur_bordure_exterieur_tableau_partie + "px solid black");
+					$(".div_partie,.div_nom_j1,.div_nom_j2").css("borderRight",epaisseur_bordure_tableau_partie + "px solid black");
+					if(index === data.liste_partie.length - 1){
+						$("#div_partie_" + index + ",#div_nom_j1_" + index + ",#div_nom_j2_" + index + ",#div_bouton_rejoindre_"  + index).css("borderBottom",epaisseur_bordure_exterieur_tableau_partie + "px solid black");
+					}else{
+						$("#div_partie_" + index + ",#div_nom_j1_" + index + ",#div_nom_j2_" + index + ",#div_bouton_rejoindre_"  + index).css("borderBottom",epaisseur_bordure_tableau_partie + "px solid black");
+					}
+				})
+	        	$(document).on("click", ".input_bouton_rejoindre_partie", function() {
+        			const id_bouton_rejoindre = $(this).attr("id"); 
+			    	const index_partie = id_bouton_rejoindre.replace("input_bouton_rejoindre_","");
+			    	const id_partie_rejoindre = $("#div_partie_" + index_partie).attr("id");
+        			const value_partie_rejoindre = $("#" + id_partie_rejoindre).html();
+        			$("#" + id_bouton_rejoindre).prop("disabled",true);
+        			$.post("/rejoindre_partie",{nom_partie:value_partie_rejoindre},(res)=>{
+        				if(res.message=="plateau_de_jeu"){
+		  					if(window.location.href=="http://127.0.0.1:800/page_accueil"){
+								window.location.href="http://127.0.0.1:800/plateau_de_jeu";
+								sessionStorage.setItem("nom_partie",value_partie_rejoindre);
+							}else{
+								if(window.location.href=="https://session-dev.herokuapp.com/"){
+									window.location.href="https://session-dev.herokuapp.com/plateau_de_jeu";
+									sessionStorage.setItem("nom_partie",value_partie_rejoindre);
+								}else{
+									window.location.href="https://session-prod.herokuapp.com/plateau_de_jeu";
+									sessionStorage.setItem("nom_partie",value_partie_rejoindre);
+								}
+							}
+			  			}else{
+			  				if(window.location.href=="http://127.0.0.1:800/page_accueil"){
+								window.location.href="http://127.0.0.1:800/selection_hero";
+								sessionStorage.setItem("nom_partie",value_partie_rejoindre);
+							}else{
+								if(window.location.href=="https://session-dev.herokuapp.com/"){
+									window.location.href="https://session-dev.herokuapp.com/selection_hero";
+									sessionStorage.setItem("nom_partie",value_partie_rejoindre);
+								}else{
+									window.location.href="https://session-prod.herokuapp.com/selection_hero";
+									sessionStorage.setItem("nom_partie",value_partie_rejoindre);
+								}
+							}
+			  			}
+        			}).fail(()=>{
+						$(".div_reponse_liste_partie").html("Le serveur n'est pas joignable.");
+						$(".div_reponse_liste_partie").css("color","red");
+						$("#" + id_bouton_rejoindre).prop("disabled",false);
+					})
+        		});
+			}else{
+				$("#div_champ_nom_partie,#div_champ_j1,#div_champ_j2,#div_champ_rejoindre").css("borderBottom",epaisseur_bordure_exterieur_tableau_partie + "px solid black");
+
+			}
+			$(".div_reponse_liste_partie").html(data.erreur);
+			$(".div_reponse_liste_partie").css("color","red");
+  		});
+        //const element = document.getElementById('bouton_log_out');
+		//const computedStyle = window.getComputedStyle(element);
+		//console.log(computedStyle.display);
+	})
+</script>

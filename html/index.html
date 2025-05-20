@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    	<meta charset="utf-8">
+    	<link rel="stylesheet" href="index.css">
+    	<link rel="shortcut icon" href="favicon.ico">
+    	<title>LE COMBAT DES HEROS </title>
+  	</head>
+	<body>
+		<div class="div_information">
+			Login : Entre 5 et 20 caractères et seulement des lettres et des chiffres.<br>
+			Mot de passe : 10 caractères minimum, majuscule et minuscule, au moins un chiffre et au moins un caractère sp&#233;cial @$!%*?&._-<br>
+			Captcha : Il faut saisir le nouveau captcha ci-dessous à chaque tentative.
+		</div>
+		<div class="div_ligne_captcha">
+			<div class="div_text_captcha">Captcha :</div>
+			<div class="div_captcha"></div>
+			<div class="div_saisi_text_captcha">
+				<input class="input_text" id="input_text_captcha" type="text">
+			</div>
+			<div class="div_bouton_captcha">
+				<input class="input_bouton" id="input_bouton_captcha" type="button" value="R&#201;G&#201;N&#201;RER">
+			</div>
+		</div>
+		<div class="text_reponse" id="text_reponse_captcha"></div>
+		<div class="div_titre">SE CONNECTER</div>
+		<div class="div_ligne">
+			<div class="div_text_connecter">Login :</div>
+			<div class="div_saissi_text">
+				<input class="input_text" id="input_text_login_connecter" type="text">
+			</div>
+		</div>
+		<div class="div_ligne">
+			<div class="div_text_connecter">Mot de passe :</div>
+			<div class="div_saissi_text">
+				<input class="input_text" id="input_text_password_connecter" type="password">
+			</div>
+		</div>
+		<div class="div_bouton">
+			<input class="input_bouton" id="input_bouton_connecter" type="button" value="VALIDER">
+		</div>
+		<div class="text_reponse" id="text_reponse_connexion"></div>
+		<div class="div_titre">CR&#201;ER UN COMPTE</div>
+		<div class="div_ligne">
+			<div class="div_text_creer_compte">Login :</div>
+			<div class="div_saissi_text">
+				<input class="input_text" id="input_text_login_creer_compte" type="text">
+			</div>
+		</div>
+		<div class="div_ligne">
+			<div class="div_text_creer_compte">Mot de passe :</div>
+			<div class="div_saissi_text">
+				<input class="input_text" id="input_text_password_creer_compte" type="password">
+			</div>
+		</div>
+		<div class="div_ligne">
+			<div class="div_text_creer_compte">Confirmer mot de passe :</div>
+			<div class="div_saissi_text">
+				<input class="input_text" id="input_text_confirme_password_creer_compte" type="password">
+			</div>
+		</div>
+		<div class="div_ligne">
+			<div class="div_text_creer_compte">Adresse mail :</div>
+			<div class="div_saissi_text">
+				<input class="input_text" id="input_text_email_creer_compte" type="text">
+			</div>
+		</div>
+		<div class="div_bouton">
+			<input class="input_bouton" id="input_bouton_creer_compte" type="button" value="VALIDER">
+		</div>
+		<div class="text_reponse" id="text_reponse_creer_compte"></div>
+	</body>
+</html>
+<script src="jquery.js"></script>
+<script>
+	$(document).ready(()=>{
+		tableau_init_keypress=[
+			"#input_text_login_connecter",
+			"#input_text_password_connecter",
+			"#input_text_login_creer_compte",
+			"#input_text_password_creer_compte",
+			"#input_text_confirme_password_creer_compte",
+			"#input_text_email_creer_compte",
+			"#input_text_captcha"
+		];
+		tableau_init_keypress.forEach((element)=>{
+			$(element).on("keypress",()=>{
+  				$(element).css("background","#fff");
+  			})
+		})
+		$.post("/captcha",(res)=>{
+			$(".div_captcha").html(res);
+		})
+		$("#input_bouton_captcha").click(()=>{
+			$("#input_bouton_captcha").prop("disabled",true);
+			$("#text_reponse_captcha").html("Veuillez patienter...");
+        	$("#text_reponse_captcha").css("color","black");
+			$.post("/captcha",(res)=>{
+				$(".div_captcha").html(res);
+				$("#text_reponse_captcha").html("");
+				$("#input_text_captcha").html("").val("");
+				$("#input_bouton_captcha").prop("disabled",false);
+			}).fail(()=>{
+				$("#text_reponse_captcha").html("Le serveur n'est pas joignable.");
+				$("#text_reponse_captcha").css("color","red");
+				$("#input_bouton_captcha").prop("disabled",false);
+			})
+		})
+		$("#input_bouton_connecter").click(()=>{
+			$("#input_bouton_connecter").prop("disabled",true);
+			$("#text_reponse_connexion").html("Veuillez patienter...");
+        	$("#text_reponse_connexion").css("color","black");
+			const user_saisi_connecter=$("#input_text_login_connecter").val();
+			const password_saisi_connecter=$("#input_text_password_connecter").val();
+			const captcha_saisi_connecter=$("#input_text_captcha").val();
+        	$.post("/connecte",{user:user_saisi_connecter,password:password_saisi_connecter,captcha:captcha_saisi_connecter},(res)=>{
+  				$("#input_text_captcha").html("").val("");
+  				if(res.message=="ok"){
+  					if(window.location.href=="http://127.0.0.1:800/"){
+						window.location.href="http://127.0.0.1:800/page_accueil";
+					}else{
+						if(window.location.href=="https://session-dev.herokuapp.com/"){
+							window.location.href="https://session-dev.herokuapp.com/page_accueil";
+						}else{
+							window.location.href="https://session-prod.herokuapp.com/page_accueil";
+						}
+					}
+	  			}else{
+	  				$("#text_reponse_connexion").html(res.message);
+	  				$(".div_captcha").html(res.captcha);
+	  				$("#input_text_captcha").html("").val("");
+	  				$("#text_reponse_connexion").css("color","red");
+	  				$(res.id).css("background","#f88");
+	  			}
+	  			$("#input_bouton_connecter").prop("disabled",false);
+			}).fail(()=>{
+				$("#text_reponse_connexion").html("Le serveur n'est pas joignable.");
+				$("#text_reponse_connexion").css("color","red");
+				$("#input_bouton_connecter").prop("disabled",false);
+			})
+        })
+        $("#input_bouton_creer_compte").click(()=>{
+        	$("#input_bouton_creer_compte").prop("disabled",true);
+        	$("#text_reponse_creer_compte").html("Veuillez patienter...");
+        	$("#text_reponse_creer_compte").css("color","black");
+			const user_saisi_creer_compte=$("#input_text_login_creer_compte").val();
+			const password_saisi_creer_compte=$("#input_text_password_creer_compte").val();
+			const confirme_password_saisi_creer_compte=$("#input_text_confirme_password_creer_compte").val();
+			const email_saisi_creer_compte=$("#input_text_email_creer_compte").val();
+			const captcha_saisi_creer_compte=$("#input_text_captcha").val();
+        	$.post("/creer_compte",{user:user_saisi_creer_compte,password:password_saisi_creer_compte,confirme_password:confirme_password_saisi_creer_compte,email:email_saisi_creer_compte,captcha:captcha_saisi_creer_compte},(res)=>{
+				$("#text_reponse_creer_compte").html(res.message);
+				$(".div_captcha").html(res.captcha);
+				$("#input_text_captcha").html("").val("");
+				$("#text_reponse_creer_compte").css("color",res.css);
+				$(res.id).css("background","#f88");
+				$("#input_bouton_creer_compte").prop("disabled",false);
+				if(res.css=="green"){
+					$("#input_text_login_creer_compte").html("").val("");
+					$("#input_text_password_creer_compte").html("").val("");
+					$("#input_text_confirme_password_creer_compte").html("").val("");
+					$("#input_text_email_creer_compte").html("").val("");
+				}
+			}).fail(()=>{
+				$("#text_reponse_creer_compte").html("Le serveur n'est pas joignable.");
+				$("#text_reponse_creer_compte").css("color","red");
+				$("#input_bouton_creer_compte").prop("disabled",false);
+			})
+        })
+	})
+</script>

@@ -1,0 +1,52 @@
+Créer clé ssh :
+ssh-keygen -t rsa -b 4096
+entrée mot de passe
+confirmée mot de passe
+C:\Users\sc1-xthieuleux\.ssh\id_rsa.pub
+https://gitlab.cultura.intra/-/profile/keys
+pour tester : ssh -T git@gitlab.cultura.intra
+
+git clone url (https://github.com/pitbull3333/test_deploiment.git)
+git status pour regarder les fichier en diference
+git add "" "" 
+git commit -m "comentaire"
+git push origin nom de la branche
+
+créer une branche :
+
+
+
+Heroku :
+heroku ps:scale web=0
+heroku ps:scale web=1
+git status
+git add app.js html/index.html
+git commit -m "commentaire"
+heroku create
+git push heroku master
+ou git push heroku HEAD:master
+curl https://session-dev.herokuapp.com
+heroku logs
+git pull heroku master
+git update-index --assume-unchanged .gitignore //attantion il faut ajouter la ligne .gitignore au fichier .gitignore
+git update-index --no-assume-unchanged .gitignore
+
+
+
+https://devcenter.heroku.com/articles/node-best-practices
+
+echo 'node_modules' >> .gitignore
+git rm -r --cached node_modules
+git commit -am 'ignore node_modules'
+
+echo 'npm-debug.log' >> .gitignore
+git commit -am 'ignore npm-debug'
+
+
+mongodb :
+url : mongodb+srv://xthieuleux:<password>@cluster0.5eej2b2.mongodb.net/?retryWrites=true&w=majority
+login : xthieuleux
+password : Mongodb@33.com
+
+ajouter une variable dans heroku :
+heroku config:set urlapp="dev"

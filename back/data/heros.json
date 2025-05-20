@@ -1,0 +1,14 @@
+{
+	"amazone":{
+		"vie":6,
+		"deplacement":2,
+		"attaque":2,
+		"portee":2
+	},
+	"archer":{
+		"vie":4,
+		"deplacement":2,
+		"attaque":1,
+		"portee":8
+	}
+}

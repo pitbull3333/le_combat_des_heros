@@ -1,0 +1,159 @@
+body{
+  background-color:#F6FD8D;
+  margin:0;
+}
+.div_haut{
+  display:flex;
+  position:relative;
+  margin-top:25px;
+  font-size:25px;
+  background-color:#0f0;
+}
+.div_titre_haut{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  font-family:Arial;
+  font-weight:600;
+  align-items:stretch;
+  /*background-color:#00f;*/
+}
+.div_titre_bas{
+  text-align:center;
+  font-size:17px;
+  font-family:Arial;
+  font-weight:600;
+
+}
+.div_bas{
+  display:flex;
+  margin-top:25px;
+  /*background-color:#f00;*/
+}
+.div_text_nom_utilisateur{
+  position:absolut;
+  margin-left:20px;
+  font-size:15px;
+  font-family:Arial;
+  font-weight:600;
+  text-align:center;
+  background-color:brown;
+}
+.div_log_out{
+  position:absolute;
+  right:20px;
+  /*background-color:#ff0;*/
+}
+.text_reponse{
+  margin-top:10px;
+  display:flex;
+  justify-content:center;
+  font-size:15px;
+  font-family:Arial;
+  font-weight:600;
+}
+.div_creation_partie{
+  width:50%;
+  /*background-color:brown;*/
+}
+.div_liste_partie{
+  width:50%;
+  /*background-color:#f93;*/
+}
+.titre_creer_partie{
+  /*background-color:#0f0;*/
+}
+.div_consigne{
+  margin-top:10px;
+  text-align:center;
+  font-size:15px;
+  font-family:Arial;
+  font-weight:600;
+  color:red;
+  /*background-color:#00f;*/
+}
+.div_nom_partie{
+  display:flex;
+  margin-top:10px;
+  justify-content:center;
+  /*background-color:#f00;*/
+}
+.div_text{
+  font-size:15px;
+  font-family:Arial;
+  font-weight:600;
+}
+.div_nom_partie_saissi{
+  margin-left:5px;
+}
+.input_nom_partie_saissi{
+  width:150px;
+  border-bottom:2px;
+}
+.div_reponse_creer_partie,.div_reponse_liste_partie{
+  margin-top:10px;
+  text-align:center;
+  font-size:15px;
+  font-family:Arial;
+  font-weight:600;
+  /*background-color:#3df;*/
+}
+.div_bouton_creer_partie{
+  margin-top:10px;
+  /*background-color:#0f0;*/
+}
+#input_bouton_creer_partie{
+  margin:auto;
+}
+.div_champ{
+  display:flex;
+  margin-top:10px;
+  justify-content:center;
+}
+#div_champ_nom_partie,#div_champ_j1,#div_champ_j2,#div_champ_rejoindre{
+  background-color:brown;
+}
+#div_champ_nom_partie,#div_champ_j1,#div_champ_j2,#div_champ_rejoindre{
+  display:grid;
+  place-items:center;
+  /*background-color:#ff0;*/
+}
+.div_partie,.div_nom_j1,.div_nom_j2,.div_bouton_rejoindre{
+  display:grid;
+  place-items:center;
+  font-size:15px;
+  font-family:Arial;
+  font-weight:600;
+  /*background-color:#0f0;*/
+}
+.div_ligne_partie{
+  display:flex;
+  justify-content:center;
+}
+.input_bouton,.input_bouton_rejoindre_partie{
+  display:flex;
+  width:120px;
+  height:25px;
+  font-family:Arial;
+  font-size:12px;
+  font-weight:600;
+  border-top:none;
+  border-right:none;
+  border-left:none;
+  border-bottom:5px solid #f9c4d2;
+  border-radius:7px;
+  box-shadow: 0px 4px #bbbbbb50;
+  background:#ffe9e9;
+}
+.input_bouton:hover,.input_bouton_rejoindre_partie:hover{
+  cursor:pointer;
+  border-bottom:3px solid #f9c4d2;
+  box-shadow:0px 3px #bbbbbb50;
+}
+.input_bouton:active,.input_bouton_rejoindre_partie:active{
+  border-bottom:0px solid #f9c4d2;
+  box-shadow:0px 0px #bbbbbb50;
+}
+/*left:50%;
+transform:translateX(-50%);*/

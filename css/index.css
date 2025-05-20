@@ -1,0 +1,103 @@
+body{
+  margin:0;
+  background-color:#F6FD8D;
+}
+input:focus{
+  outline:1px solid black;
+  /*background:#f88;*/
+}
+.div_information{
+  margin-top:20px;
+  font-size:15px;
+  font-family:Arial;
+  font-weight:600;
+  text-align:center;
+  color:red;
+}
+.div_ligne_captcha{
+  display:flex;
+  justify-content:center;
+  margin-top:20px;
+  font-weight:600;
+}
+.div_captcha{
+  margin-top:3px;
+}
+.div_saisi_text_captcha{
+  margin-left:5px;
+  align-self:center;
+}
+.div_bouton_captcha{
+  margin-left:10px;
+  align-self:center;
+}
+.div_titre{
+  margin-top:20px;
+  font-size:20px;
+  font-family:Arial;
+  font-weight:600;
+  text-align:center;
+  color:blue;
+}
+.div_ligne{
+  display:flex;
+  justify-content:center;
+  margin-top:10px;
+  font-weight:600;
+}
+.div_text_captcha{
+  width:70px;
+  font-size:15px;
+  font-family:Arial;
+  align-self:center;
+}
+.div_text_connecter{
+  width:110px;
+  font-size:15px;
+  font-family:Arial;
+}
+.div_text_creer_compte{
+  width:190px;
+  font-size:15px;
+  font-family:Arial;
+}
+.div_bouton{
+  display:flex;
+  justify-content:center;
+  margin-top:10px;
+}
+.text_reponse{
+  margin-top:10px;
+  display:flex;
+  justify-content:center;
+  font-size:15px;
+  font-family:Arial;
+  font-weight:600;
+}
+.input_text{
+  width:150px;
+  border-bottom:2px;
+}
+.input_bouton{
+  width:100px;
+  height:25px;
+  font-family:Arial;
+  font-size:12px;
+  font-weight:600;
+  border-top:none;
+  border-right:none;
+  border-left:none;
+  border-bottom:5px solid #f9c4d2;
+  border-radius:7px;
+  box-shadow: 0px 4px #bbbbbb50;
+  background:#ffe9e9;
+}
+.input_bouton:hover{
+  cursor:pointer;
+  border-bottom:3px solid #f9c4d2;
+  box-shadow: 0px 3px #bbbbbb50;
+}
+.input_bouton:active{
+  border-bottom:0px solid #f9c4d2;
+  box-shadow: 0px 0px #bbbbbb50;
+}
