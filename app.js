@@ -81,7 +81,7 @@ try {
 app.get("/",(req,res)=>{
   captcha=svgCaptcha.create(option_captcha);
   req.session.captcha=captcha;
-  res.render("index.html");
+  res.render("index.html",{connectionName:connection_bdd_mongodb_login});
 })
 app.get("/page_accueil",(req,res)=>{
   if(req.session.user){
