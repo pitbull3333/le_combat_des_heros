@@ -37,6 +37,10 @@ const sessionMiddleware = session({
 });
 app.use(sessionMiddleware);
 // Ecoute du serveur
+if (!port) {
+  console.error("ERREUR : process.env.PORT est non défini !");
+  process.exit(1);
+}
 const serveur = app.listen(port,(err)=>{
   if(err){
     console.log("Le serveur n'a pas pu démarrer");
