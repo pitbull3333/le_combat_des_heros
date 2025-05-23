@@ -9,7 +9,7 @@ require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'development'}`
      //connection_bdd_mongodb_login="bdd_le_combat_des_heros_prod";
   //}
 //}
-port = process.env.PORT || 8080;
+port = process.env.PORT;
 const url_mongodb = process.env.DB_URL;
 connection_bdd_mongodb_login = process.env.DATABASE_URL;
 const option_captcha={
