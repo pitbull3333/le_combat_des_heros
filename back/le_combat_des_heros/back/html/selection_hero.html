@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    	<meta charset="utf-8">
+    	<link rel="stylesheet" href="selection_hero.css">
+    	<link rel="shortcut icon" href="favicon.ico">
+    	<title>SELECTION DES HEROS</title>
+  	</head>
+	<body>
+		<div class="div_haut">
+			<div class="div_titre_haut">SELECTION DES HEROS</div>
+			<div class="div_nom_utilisateur">
+				<div class="div_text_nom_utilisateur">JOUEUR : <%= utilisateur %></div>
+				<div class="div_text_nom_partie"></div>
+			</div>
+			<div class="div_bouton_retour">
+				<div class="div_retour_accueil">
+					<input class="input_bouton" id="bouton_retour_accueil" type="button" value="PAGE D'ACCCUEIL">
+				</div>
+				<div class="div_log_out">
+					<input class="input_bouton" id="bouton_log_out" type="button" value="SE D&#201;CONNECTER">
+				</div>
+			</div>
+		</div>
+		<div class="div_consigne">Déplacé 6 hêros en les dropend sur les point noir puis valider. Maintenir clic droit de la souris pour voir le détaille du hêro</div>
+		<div class="div_bas">
+			<div class="div_gauche">
+				<div class="div_conteneur_hero">
+					<div class="div_hero_gauche">
+						<div class="div_hero" id="div_hero1">
+							<img class="img_hero" id="img_hero1" src="heros/amazone.png">
+						</div>
+						<div class="div_hero" id="div_hero2">
+							<img class="img_hero" id="img_hero2" src="heros/archer.png">
+						</div>
+						<div class="div_hero" id="div_hero3">
+							<img class="img_hero" id="img_hero3" src="heros/barbare.png">
+						</div>
+						<div class="div_hero" id="div_hero4">
+							<img class="img_hero" id="img_hero4" src="heros/cavalier.png">
+						</div>
+						<div class="div_hero" id="div_hero5">
+							<img class="img_hero" id="img_hero5" src="heros/clone.png">
+						</div>
+						<div class="div_hero" id="div_hero6">
+							<img class="img_hero" id="img_hero6" src="heros/dragon.png">
+						</div>
+					</div>
+					<div class="div_hero_droite">
+						<div class="div_hero" id="div_hero7">
+							<img class="img_hero" id="img_hero7" src="heros/mage.png">
+						</div>
+						<div class="div_hero" id="div_hero8">
+							<img class="img_hero" id="img_hero8" src="heros/moine.png">
+						</div>
+						<div class="div_hero" id="div_hero9">
+							<img class="img_hero" id="img_hero9" src="heros/paladin.png">
+						</div>
+						<div class="div_hero" id="div_hero10">
+							<img class="img_hero" id="img_hero10" src="heros/serpent.png">
+						</div>
+						<div class="div_hero" id="div_hero11">
+							<img class="img_hero" id="img_hero11" src="heros/telepathe.png">
+						</div>
+						<div class="div_hero" id="div_hero12">
+							<img class="img_hero" id="img_hero12" src="heros/teleporteur.png">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="div_droite">
+				<div class="div_detaille_hero"></div>
+				<div class="div_valider">
+					<div class="div_bouton_valider">
+						<input class="input_bouton" id="bouton_valider" type="button" value="VALIDER">
+					</div>
+					<div class="div_reponce_valider"></div>
+				</div>
+				<table>
+					<tr>
+						<td class="text"></td><td></td><td class="text"></td><td class="text"></td><td></td><td class="text"></td><td class="text"></td><td></td><td class="text"></td>
+					</tr>
+					<tr>
+						<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+					</tr>
+					<tr>
+						<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+					</tr>
+					<tr>
+						<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+					</tr>
+					<tr>
+						<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+					</tr>
+					<tr>
+						<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+					</tr>
+					<tr>
+						<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+					</tr>
+					<tr>
+						<td>
+							<div class="div_td_draggable">
+								<div class="div_point"></div>
+							</div>
+						</td>
+						<td></td>
+						<td>
+							<div class="div_td_draggable">
+								<div class="div_point"></div>
+							</div>
+						</td>
+						<td>
+							<div class="div_td_draggable">
+								<div class="div_point"></div>
+							</div>
+						</td>
+						<td></td>
+						<td>
+							<div class="div_td_draggable">
+								<div class="div_point"></div>
+							</div>
+						</td>
+						<td>
+							<div class="div_td_draggable">
+								<div class="div_point"></div>
+							</div>
+						</td>
+						<td></td>
+						<td>
+							<div class="div_td_draggable">
+								<div class="div_point"></div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>
+<script src="jquery.js"></script>
+<script>
+	$(document).ready(()=>{
+		$(".div_text_nom_partie").html("PARTIE : " + sessionStorage.getItem("nom_partie").toUpperCase());
+		const taille_case = 70;
+		$("td").css("width",taille_case + "px");
+		$("td").css("height",taille_case + "px");
+		$(".div_td_draggable").css("width",taille_case + "px");
+		$(".div_td_draggable").css("height",taille_case + "px");
+		$(".div_hero").css("width",taille_case + "px");
+		$(".div_hero").css("height",taille_case + "px");
+		$(".img_hero").css("width",taille_case + "px");
+		$(".img_hero").css("height",taille_case + "px");
+		const text_td = "Hero adverse";
+		$(".text").html(text_td);
+		$("#bouton_log_out").click(()=>{
+			$("#bouton_log_out").prop("disabled",true);
+			$.post("/log_out",()=>{
+				if(window.location.href=="http://127.0.0.1:800/selection_hero"){
+					window.location.href="http://127.0.0.1:800";
+				}else{
+					if(window.location.href=="https://session-dev.herokuapp.com/selection_hero"){
+						window.location.href="https://session-dev.herokuapp.com";
+					}else{
+						window.location.href="https://session-prod.herokuapp.com";
+					}
+				}
+  			}).fail(()=>{
+				$("#bouton_log_out").prop("disabled",false);
+			})
+        })
+        $("#bouton_retour_accueil").click(()=>{
+			$("#bouton_retour_accueil").prop("disabled",true);
+			$.post("/retour_accueil",()=>{
+				if(window.location.href=="http://127.0.0.1:800/selection_hero"){
+					window.location.href="http://127.0.0.1:800/page_accueil";
+				}else{
+					if(window.location.href=="https://session-dev.herokuapp.com/selection_hero"){
+						window.location.href="https://session-dev.herokuapp.com/page_accueil";
+					}else{
+						window.location.href="https://session-prod.herokuapp.com/page_accueil";
+					}
+				}
+  			}).fail(()=>{
+				$("#bouton_log_out").prop("disabled",false);
+			})
+        })
+        $("#bouton_valider").click(()=>{
+        	//$("#bouton_valider").prop("disabled",true);
+        	let heros_selectionne = [];
+    		$(".div_td_draggable").each(function(){
+        		let img = $(this).find(".img_hero");
+            	let src = img.attr("src");// Récupère "heros/teleporteur.png"
+            	let nom = img.attr("src").match(/([^\/]+)\.png$/)[1];
+            	heros_selectionne.push(nom);
+            });
+            heros_selectionne = JSON.stringify(heros_selectionne);
+            $.post("/heros_selectionne",{nom_partie:sessionStorage.getItem("nom_partie"),nom_heros_selectionne:heros_selectionne},(res)=>{
+            	$("#bouton_valider").prop("disabled",true);
+        		if(res.message=="ok"){
+		  			if(window.location.href === "http://127.0.0.1:800/selection_hero"){
+						window.location.href="http://127.0.0.1:800/plateau_de_jeu";
+					}else{
+						window.location.href="https://session-dev.herokuapp.com/plateau_de_jeu";
+					}
+				}
+            }).fail(()=>{
+            	$(".div_reponce_valider").html(res.message);
+				$(".div_reponce_valider").css("color","red");
+				$("#bouton_valider").prop("disabled",false);
+			})
+        });
+        // Gestion du Drag & Drop
+		document.addEventListener("contextmenu", e => e.preventDefault());// Désactivation du contexte menu (click droit)
+    	// Fonction pour trouver la div la plus proche
+		function getClosestDiv(element){
+			let allDivs = document.querySelectorAll(".div_hero,.div_td_draggable");
+			let minDistance = Infinity;
+			let closestDiv = null;
+			let elemRect = element.getBoundingClientRect();
+			let elemCenterX = elemRect.left + elemRect.width / 2;
+			let elemCenterY = elemRect.top + elemRect.height / 2;
+    		allDivs.forEach(div => {
+				let divRect = div.getBoundingClientRect();
+				let divCenterX = divRect.left + divRect.width / 2;
+				let divCenterY = divRect.top + divRect.height / 2;
+				let distance = Math.sqrt(
+					Math.pow(divCenterX - elemCenterX, 2) +
+					Math.pow(divCenterY - elemCenterY, 2)
+				);
+				if(distance < minDistance){
+					minDistance = distance;
+					closestDiv = div;
+				}
+			});
+			return closestDiv;
+		}
+		// Ajout du Drag & Drop sur les images
+		document.querySelectorAll(".img_hero").forEach(img => {
+			img.addEventListener("mousedown",function (e) {
+				if(e.button == 2){
+					const nom_fichier_hero = $(this).attr("src").split("/").pop();
+					const img_detaille_hero = '<img class="img_detaille_hero" src="cartes/' + nom_fichier_hero + '">';
+					$(".div_detaille_hero").html(img_detaille_hero);
+				}
+				if(e.button == 0){
+					e.preventDefault();// Empêche le comportement par défaut du navigateur (désactive les fonction native de drag and drop).
+					let element = this;
+					let initialParent = element.parentElement; // Sauvegarde l'ancienne div avant déplacement
+					let initialX = element.getBoundingClientRect().left;
+					let initialY = element.getBoundingClientRect().top;
+					let offsetX = e.clientX - element.getBoundingClientRect().left;
+					let offsetY = e.clientY - element.getBoundingClientRect().top;
+					let hasMoved = false;
+					element.style.zIndex = "2";
+					function moveAt(x,y){
+						element.style.left = x - offsetX + "px";
+						element.style.top = y - offsetY + "px";
+						if(initialParent.className === "div_hero"){
+							element.style.position = "absolute";
+						}else{
+							element.style.position = "fixed";
+						}
+					}
+					function onMouseMove(e){
+			        	hasMoved = true;
+			        	moveAt(e.clientX,e.clientY);
+					}
+					document.addEventListener("mousemove",onMouseMove);
+					// Relâchement de la souris
+					document.addEventListener("mouseup",function(){
+						document.removeEventListener("mousemove",onMouseMove);
+						element.style.zIndex = "0";
+						if(!hasMoved){// Si aucun mouvement n'a été détecté, on intéron l'execution de la fonction.
+							return;
+						}
+						// Trouver la div la plus proche
+						let closestDiv = getClosestDiv(element);
+						if (closestDiv) {
+							// Vérifier si la div contient déjà une image
+							if (closestDiv.querySelector(".img_hero,.div_td_draggable")){
+								// Retourner à l'ancienne position
+								element.style.left = initialX + "px";
+								element.style.top = initialY + "px";
+								initialParent.appendChild(element);
+							}else{
+								// Ajuste la position au centre de la div trouvée
+								let divRect = closestDiv.getBoundingClientRect();
+								if(closestDiv.className === "div_td_draggable"){
+									element.style.position = "absolute";
+									element.style.left = 0;
+									element.style.top = 0;
+								}else{
+									element.style.left = divRect.left + "px";
+									element.style.top = divRect.top + "px";
+								}
+								// Ajoute l'élément à la div trouvée
+								closestDiv.appendChild(element);
+								allDraggableDivsHaveImage();
+							}
+						}
+					},{once:true});
+				}
+			});
+		});
+		// Gestion de l'affichage du pointeur de la souris
+		$(".div_detaille_hero").hide();
+		$(".img_hero").css("cursor","grab");
+		$(".img_hero").on("mouseup",(e) => {
+			$(".img_hero").css("cursor","grab");
+			if (e.button == 2){
+				$(".div_detaille_hero").hide();
+			}
+		});
+		$(".div_hero,.div_td_draggable").on("mouseleave",() => {
+			$("html").css("cursor","default");
+			$(".div_detaille_hero").hide();
+		});
+		$(".img_hero").on("mousedown",(e) => {
+			if (e.button == 0){
+				$(".img_hero").css("cursor","grabbing");
+			}
+			if (e.button == 2){
+				$(".div_detaille_hero").show();
+			}
+		});
+		// Vérification des conditions de validation
+		$("#bouton_valider").prop("disabled",true);
+		function allDraggableDivsHaveImage(){
+			let allDivs = document.querySelectorAll(".div_td_draggable");
+			if(Array.from(allDivs).every(div => div.querySelector(".img_hero")) == false){
+				$("#bouton_valider").prop("disabled",true);
+			}else{
+				$("#bouton_valider").prop("disabled",false);
+			}
+		}
+	})
+</script>

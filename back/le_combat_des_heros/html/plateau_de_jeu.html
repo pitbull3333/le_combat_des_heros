@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    	<meta charset="utf-8">
+    	<link rel="stylesheet" href="plateau_de_jeu.css">
+    	<link rel="shortcut icon" href="favicon.ico">
+    	<title>PLATEAU DE JEU</title>
+  	</head>
+	<body>
+		<div class="div_general">
+			<div class="div_plateau_de_jeu">
+				<table class="tableau_plateau_de_jeu"></table>
+			</div>
+			<div class="div_gauche">
+				<div class="div_bandeau_haut">
+					<div class="div_text_utilisateur">
+						<div class="div_text_nom_utilisateur">JOUEUR : <%= utilisateur %></div>
+						<div class="div_text_nom_partie"></div>
+					</div>
+					<div class="div_bouton_retour">
+						<div class="div_retour_accueil">
+							<input class="input_bouton" id="bouton_retour_accueil" type="button" value="PAGE D'ACCCUEIL">
+						</div>
+						<div class="div_log_out">
+							<input class="input_bouton" id="bouton_log_out" type="button" value="SE D&#201;CONNECTER">
+						</div>
+					</div>
+				</div>
+				<div class="div_information_principale"></div>
+				<div class="div_information_secondaire"></div>
+				<div class="div_texte_titre_heros_jouable">HEROS JOUABLE :</div>
+				<div class="div_heros_jouable_adversaire">
+					<div class="div_text_heros_jouable">Heros adverse :</div>
+					<div class="div_conteneur_heros_jouable" id="div_conteneur_heros_jouable_adversaire">
+					</div>
+				</div>
+				<div class="div_heros_jouable_vous">
+					<div class="div_text_heros_jouable">Vos heros :</div>
+					<div class="div_conteneur_heros_jouable" id="div_conteneur_heros_jouable_vous"></div>
+				</div>
+				<div class="div_bouton_fin_du_tour">
+					<input class="input_bouton" id="input_bouton_fin_du_tour" type="button" value="FIN DU TOUR">
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+<script src="jquery.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+	$(document).ready(()=>{
+		$(".div_text_nom_partie").html("PARTIE : " + sessionStorage.getItem("nom_partie").toUpperCase());
+		const taille_case = 80;
+		const taille_heros_jouable = 80;
+		$("#input_bouton_fin_du_tour").prop("disabled",true);
+		$("#bouton_log_out").click(()=>{
+			$("#bouton_log_out").prop("disabled",true);
+			$.post("/log_out",()=>{
+				if(window.location.href=="http://127.0.0.1:800/plateau_de_jeu"){
+					window.location.href="http://127.0.0.1:800";
+				}else{
+					if(window.location.href=="https://session-dev.herokuapp.com/plateau_de_jeu"){
+						window.location.href="https://session-dev.herokuapp.com";
+					}else{
+						window.location.href="https://session-prod.herokuapp.com";
+					}
+				}
+  			}).fail(()=>{
+				$("#bouton_log_out").prop("disabled",false);
+			})
+        })
+        $("#bouton_retour_accueil").click(()=>{
+			$("#bouton_retour_accueil").prop("disabled",true);
+			$.post("/retour_accueil",()=>{
+				if(window.location.href=="http://127.0.0.1:800/plateau_de_jeu"){
+					window.location.href="http://127.0.0.1:800/page_accueil";
+				}else{
+					if(window.location.href=="https://session-dev.herokuapp.com/plateau_de_jeu"){
+						window.location.href="https://session-dev.herokuapp.com/page_accueil";
+					}else{
+						window.location.href="https://session-prod.herokuapp.com/page_accueil";
+					}
+				}
+  			}).fail(()=>{
+				$("#bouton_log_out").prop("disabled",false);
+			})
+        })
+        $("#input_bouton_fin_du_tour").click(()=>{
+			$("#input_bouton_fin_du_tour").prop("disabled",true);
+			$.post("/fin_du_tour",{nom_partie:sessionStorage.getItem("nom_partie")},(res)=>{
+				//console.log(res.data[0]);
+  			}).fail(()=>{
+				$("#input_bouton_fin_tour").prop("disabled",false);
+			})
+        })
+		const socket = io({withCredentials:true});// Créer une connexion au serveur et transmission des cookies utilisé pour la session avec withCredentials:true
+		socket.emit("mise_a_jour_partie",{partie:sessionStorage.getItem("nom_partie")});
+		socket.on("mise_a_jour_partie",({code_html,data,erreur}) => {
+			console.log("socket mise_a_jour_partie ok");
+			let numero_joueur;
+			let joueur = "<%= utilisateur %>";
+			joueur = joueur.toLowerCase();
+			if(data[0].j1.nom_joueur === joueur){
+				numero_joueur = 1;
+			}else{
+				numero_joueur = 2;
+			}
+			let code_html_tableau_plateau_de_jeu = "";
+			let numero_case;
+			for(let y = 0;y < 8;y++){
+				code_html_tableau_plateau_de_jeu = code_html_tableau_plateau_de_jeu + "<tr>";
+				for(let x = 0;x < 9;x++){
+					if(numero_joueur == 1){
+						numero_case = (y * 9) + x;
+					}else{
+						numero_case = 71 - ((y * 9) + x);
+					}
+					const html_plateau_de_jeu = code_html.replace(/\{0\}/g,numero_case);
+					code_html_tableau_plateau_de_jeu = code_html_tableau_plateau_de_jeu + html_plateau_de_jeu;
+				}
+				code_html_tableau_plateau_de_jeu = code_html_tableau_plateau_de_jeu + "</tr>";
+			}
+			$(".tableau_plateau_de_jeu").html(code_html_tableau_plateau_de_jeu);
+			$("td").css("width",taille_case + "px");
+			$("td").css("height",taille_case + "px");
+			$(".div_td_plateau_de_jeu").css("width",taille_case + "px");
+			$(".div_td_plateau_de_jeu").css("height",taille_case + "px");
+			$("#div_conteneur_heros_jouable_vous").html("");
+			$("#div_conteneur_heros_jouable_adversaire").html("");
+			for(let i = 0;i < 6;i++){
+				const heros_j1 = data[0].j1[`h${i + 1}`];
+				const nom_heros_j1 = heros_j1.nom_heros;
+				const carte_j1 = heros_j1.carte;
+				const emplacement_j1 = heros_j1.emplacement;
+				const heros_j2 = data[0].j2[`h${i + 1}`];
+				const nom_heros_j2 = heros_j2.nom_heros;
+				const carte_j2 = heros_j2.carte;
+				const emplacement_j2 = heros_j2.emplacement;
+				let couleur_case_heros;
+				if(nom_heros_j1 != ""){
+					$("#" + emplacement_j1).html(`<img src="heros/${nom_heros_j1}.png" style="max-width:${taille_case}px;max-height:${taille_case}px;width:auto;height:auto;display:block;margin:auto;">`);
+					if(numero_joueur == 1){
+						if(carte_j1 == 2){
+							$("#div_conteneur_heros_jouable_vous").append(`<div class="div_heros_jouable" id="div_heros_jouable_vous_${i}"><img class="img_heros_jouable" src="heros/${nom_heros_j1}.png">`);
+						}
+						couleur_case_heros = "#0ff";
+					}else{
+						if(carte_j1 == 2){
+							$("#div_conteneur_heros_jouable_adversaire").append(`<div class="div_heros_jouable" id="div_heros_jouable_adversaire_${i}"><img class="img_heros_jouable" src="heros/${nom_heros_j1}.png">`);
+						}
+						couleur_case_heros = "#f00";
+					}
+					$("#" + emplacement_j1).css("backgroundColor",couleur_case_heros);
+				}
+				if(nom_heros_j2 != ""){
+					$("#" + emplacement_j2).html(`<img src="heros/${nom_heros_j2}.png" style="max-width:${taille_case}px;max-height:${taille_case}px;width:auto;height:auto;display:block;margin:auto;">`);
+					if(numero_joueur == 1){
+						if(carte_j2 == 2){
+							$("#div_conteneur_heros_jouable_adversaire").append(`<div class="div_heros_jouable" id="div_heros_jouable_adversaire_${i}"><img class="img_heros_jouable" src="heros/${nom_heros_j2}.png">`);
+						}
+						couleur_case_heros = "#f00";
+					}else{
+						if(carte_j2 == 2){
+							$("#div_conteneur_heros_jouable_vous").append(`<div class="div_heros_jouable" id="div_heros_jouable_vous_${i}"><img class="img_heros_jouable" src="heros/${nom_heros_j2}.png">`);
+						}
+						couleur_case_heros = "#0ff";
+					}
+					$("#" + emplacement_j2).css("backgroundColor",couleur_case_heros);
+				}
+				$(".div_heros_jouable").css("width",taille_heros_jouable + "px");
+				$(".div_heros_jouable").css("height",taille_heros_jouable + "px");
+				$(".img_heros_jouable").css("maxWidth",taille_heros_jouable + "px");
+				$(".img_heros_jouable").css("maxHeight",taille_heros_jouable + "px");
+				$("#div_heros_jouable_vous_" + i).css("backgroundColor","#0ff");
+				$("#div_heros_jouable_adversaire_" + i).css("backgroundColor","#f00");
+			}
+			let information_principale;
+			switch (true){
+				case (data[0].jeton == 0):
+					information_principale = "En attantre de l'autre joueur...";
+					$("#input_bouton_fin_du_tour").prop("disabled",true);
+					break;
+				case (data[0].jeton == 1 && numero_joueur == 1):
+					information_principale = "A vous de jouer !";
+					$("#input_bouton_fin_du_tour").prop("disabled",false);
+					break;
+				case (data[0].jeton == 1 && numero_joueur == 2):
+					information_principale = "A votre adversaire de jouer.";
+					$("#input_bouton_fin_du_tour").prop("disabled",true);
+					break;
+				case (data[0].jeton == 2 && numero_joueur == 2):
+					information_principale = "A vous de jouer !";
+					$("#input_bouton_fin_du_tour").prop("disabled",false);
+					break;
+				case (data[0].jeton == 2 && numero_joueur == 1):
+					information_principale = "A votre adversaire de jouer.";
+					$("#input_bouton_fin_du_tour").prop("disabled",true);
+					break;
+				case (data[0].jeton == 3 && numero_joueur == 1):
+					information_principale = "Fin de la partie vous avez GANIER !!!";
+					$("#input_bouton_fin_du_tour").prop("disabled",true);
+					break;
+				case (data[0].jeton == 3 && numero_joueur == 2):
+					information_principale = "Fin de la partie vous avez PERDU !!!";
+					$("#input_bouton_fin_du_tour").prop("disabled",true);
+					break;
+				case (data[0].jeton == 4 && numero_joueur == 2):
+					information_principale = "Fin de la partie vous avez GANIER !!!";
+					$("#input_bouton_fin_du_tour").prop("disabled",true);
+					break;
+				case (data[0].jeton == 4 && numero_joueur == 1):
+					information_principale = "Fin de la partie vous avez PERDU !!!";
+					$("#input_bouton_fin_du_tour").prop("disabled",true);
+					break;
+			}
+			$(".div_information_principale").html(information_principale);
+			let information_secondaire;
+			if(data[0].jeton == 1 && numero_joueur == 1 || data[0].jeton == 2 && numero_joueur == 2){
+				information_secondaire = "Faite une ou des actions si vous le voulez et clicker sur fin du tour.";
+			}else{
+				information_secondaire = "";
+			}
+			$(".div_information_secondaire").html(information_secondaire);
+		});
+	})
+</script>
