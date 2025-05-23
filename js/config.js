@@ -10,9 +10,9 @@ require('dotenv').config();
      //connection_bdd_mongodb_login="bdd_le_combat_des_heros_prod";
   //}
 //}
-port = process.env.PORT;
+const port = process.env.PORT;
 const url_mongodb = process.env.DB_URL;
-connection_bdd_mongodb_login = process.env.DATABASE_URL;
+const connection_bdd_mongodb_login = process.env.DATABASE_URL;
 const option_captcha={
  size:6,// nombre de caractères dans le captcha
  ignoreChars:"0oOiIlL1",// caractères à ignorer
