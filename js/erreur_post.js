@@ -17,7 +17,7 @@ const erreur_post = (fn) => {
             //console.log("Clôture de la connexion bdd");
             await req.client.close();
           }else{
-            console.log("Connexion à la bdd déjà fermée ou invalide.");
+            //console.log("Connexion à la bdd déjà fermée ou invalide.");
           }
         }catch (closeErr) {
           console.log("Erreur lors de la fermeture de la connexion à la bdd");

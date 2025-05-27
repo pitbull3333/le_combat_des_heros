@@ -56,14 +56,10 @@
 		$("#bouton_log_out").click(()=>{
 			$("#bouton_log_out").prop("disabled",true);
 			$.post("/log_out",()=>{
-				if(window.location.href=="http://127.0.0.1:800/plateau_de_jeu"){
-					window.location.href="http://127.0.0.1:800";
+				if(window.location.href=="http://127.0.0.1/plateau_de_jeu"){
+					window.location.href="http://127.0.0.1";
 				}else{
-					if(window.location.href=="https://session-dev.herokuapp.com/plateau_de_jeu"){
-						window.location.href="https://session-dev.herokuapp.com";
-					}else{
-						window.location.href="https://session-prod.herokuapp.com";
-					}
+					window.location.href="https://lecombatdesheros.up.railway.app";
 				}
   			}).fail(()=>{
 				$("#bouton_log_out").prop("disabled",false);
@@ -72,14 +68,10 @@
         $("#bouton_retour_accueil").click(()=>{
 			$("#bouton_retour_accueil").prop("disabled",true);
 			$.post("/retour_accueil",()=>{
-				if(window.location.href=="http://127.0.0.1:800/plateau_de_jeu"){
-					window.location.href="http://127.0.0.1:800/page_accueil";
+				if(window.location.href=="http://127.0.0.1/plateau_de_jeu"){
+					window.location.href="http://127.0.0.1/page_accueil";
 				}else{
-					if(window.location.href=="https://session-dev.herokuapp.com/plateau_de_jeu"){
-						window.location.href="https://session-dev.herokuapp.com/page_accueil";
-					}else{
-						window.location.href="https://session-prod.herokuapp.com/page_accueil";
-					}
+					window.location.href="https://lecombatdesheros.up.railway.app/page_accueil";
 				}
   			}).fail(()=>{
 				$("#bouton_log_out").prop("disabled",false);

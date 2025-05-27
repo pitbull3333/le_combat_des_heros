@@ -65,14 +65,10 @@
 			$("#text_reponse_log_out").html("veuillez patienter...");
 			$("#text_reponse_log_out").css("color","black");
 			$.post("/log_out",()=>{
-				if(window.location.href=="http://127.0.0.1:800/page_accueil"){
-					window.location.href="http://127.0.0.1:800";
+				if(window.location.href=="http://127.0.0.1/page_accueil"){
+					window.location.href="http://127.0.0.1";
 				}else{
-					if(window.location.href=="https://session-dev.herokuapp.com/page_accueil"){
-						window.location.href="https://session-dev.herokuapp.com";
-					}else{
-						window.location.href="https://session-prod.herokuapp.com";
-					}
+					window.location.href="https://lecombatdesheros.up.railway.app";
 				}
   			}).fail(()=>{
 				$("#text_reponse_log_out").html("Le serveur n'est pas joignable.");
@@ -144,30 +140,20 @@
         			$("#" + id_bouton_rejoindre).prop("disabled",true);
         			$.post("/rejoindre_partie",{nom_partie:value_partie_rejoindre},(res)=>{
         				if(res.message=="plateau_de_jeu"){
-		  					if(window.location.href=="http://127.0.0.1:800/page_accueil"){
-								window.location.href="http://127.0.0.1:800/plateau_de_jeu";
+		  					if(window.location.href=="http://127.0.0.1/page_accueil"){
+								window.location.href="http://127.0.0.1/plateau_de_jeu";
 								sessionStorage.setItem("nom_partie",value_partie_rejoindre);
 							}else{
-								if(window.location.href=="https://session-dev.herokuapp.com/"){
-									window.location.href="https://session-dev.herokuapp.com/plateau_de_jeu";
-									sessionStorage.setItem("nom_partie",value_partie_rejoindre);
-								}else{
-									window.location.href="https://session-prod.herokuapp.com/plateau_de_jeu";
-									sessionStorage.setItem("nom_partie",value_partie_rejoindre);
-								}
+								window.location.href="https://lecombatdesheros.up.railway.app/plateau_de_jeu";
+								sessionStorage.setItem("nom_partie",value_partie_rejoindre);
 							}
 			  			}else{
-			  				if(window.location.href=="http://127.0.0.1:800/page_accueil"){
-								window.location.href="http://127.0.0.1:800/selection_hero";
+			  				if(window.location.href=="http://127.0.0.1/page_accueil"){
+								window.location.href="http://127.0.0.1/selection_hero";
 								sessionStorage.setItem("nom_partie",value_partie_rejoindre);
 							}else{
-								if(window.location.href=="https://session-dev.herokuapp.com/"){
-									window.location.href="https://session-dev.herokuapp.com/selection_hero";
-									sessionStorage.setItem("nom_partie",value_partie_rejoindre);
-								}else{
-									window.location.href="https://session-prod.herokuapp.com/selection_hero";
-									sessionStorage.setItem("nom_partie",value_partie_rejoindre);
-								}
+								window.location.href="https://lecombatdesheros.up.railway.app/selection_hero";
+								sessionStorage.setItem("nom_partie",value_partie_rejoindre);
 							}
 			  			}
         			}).fail(()=>{

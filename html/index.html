@@ -116,14 +116,10 @@
         	$.post("/connecte",{user:user_saisi_connecter,password:password_saisi_connecter,captcha:captcha_saisi_connecter},(res)=>{
   				$("#input_text_captcha").html("").val("");
   				if(res.message=="ok"){
-  					if(window.location.href=="http://127.0.0.1:800/"){
+  					if(window.location.href=="http://127.0.0.1/"){
 						window.location.href="http://127.0.0.1:800/page_accueil";
 					}else{
-						if(window.location.href=="https://session-dev.herokuapp.com/"){
-							window.location.href="https://session-dev.herokuapp.com/page_accueil";
-						}else{
-							window.location.href="https://session-prod.herokuapp.com/page_accueil";
-						}
+						window.location.href="https://lecombatdesheros.up.railway.app/page_accueil";
 					}
 	  			}else{
 	  				$("#text_reponse_connexion").html(res.message);
