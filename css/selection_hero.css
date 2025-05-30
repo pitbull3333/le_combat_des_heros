@@ -1,6 +1,6 @@
 body{
   margin:0;
-  background-color:brown;
+  background-color:#522;
 }
 table{
    border-collapse:collapse;
@@ -21,12 +21,12 @@ img{
   margin-top:25px;
   font-size:25px;
   align-items:center;
-  background-color:#0f0;
+  /*background-color:#0f0;*/
 }
 .div_titre_haut{
   font-family:Arial;
   font-weight:600;
-  background-color:#00f;
+  /*background-color:#00f;*/
 }
 .div_consigne{
   margin-top:10px;
@@ -35,29 +35,27 @@ img{
   font-family:Arial;
   font-weight:600;
   color:red;
-  background-color:#00f;
+  /*background-color:#00f;*/
 }
 .div_bas{
   display:flex;
   justify-content:center;
   margin-top:25px;
-  background-color:#f00;
+  /*background-color:#f00;*/
 }
 .div_gauche{
   align-self:center;
   margin-right:25px;
-  background-color:#0ff;
 }
 .div_droite{
   position:relative;
-  background-color:#0f0;
 }
 .div_conteneur_hero{
   display:flex;
   justify-content:center;
 }
 .div_hero{
-  background-color:#0f0;
+  background-color:#F6FD8D;
 }
 #div_hero2,#div_hero3,#div_hero4,#div_hero5,#div_hero6,#div_hero8,#div_hero9,#div_hero10,#div_hero11,#div_hero12{
   margin-top:20px;
@@ -69,13 +67,13 @@ img{
   display:flex;
   position:absolute;
   left:20px;
-  background-color:#ff0;
+  /*background-color:#ff0;*/
 }
 .div_bouton_retour{
   display:flex;
   position:absolute;
   right:20px;
-  background-color:#ff0;
+  /*background-color:#ff0;*/
 }
 .div_text_nom_utilisateur{
   font-size:15px;

@@ -7,7 +7,7 @@ body{
   position:relative;
   margin-top:25px;
   font-size:25px;
-  background-color:#0f0;
+  /*background-color:#0f0;*/
 }
 .div_titre_haut{
   position:absolute;
@@ -38,7 +38,7 @@ body{
   font-family:Arial;
   font-weight:600;
   text-align:center;
-  background-color:brown;
+  /*background-color:brown;*/
 }
 .div_log_out{
   position:absolute;
